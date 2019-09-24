@@ -1,0 +1,36 @@
+@(webSocketUrl: String)(implicit request: RequestHeader)
+
+@main("Welcome to Play")(webSocketUrl) {
+  <h1>Welcome to Play!</h1>
+  <!-- Modal content -->
+  <div id="modal-start" class="modal" >
+    <div class="modal-content">
+      <form>
+        <div class="form-raw">
+          <label for="nameInput">Enter your name</label>
+          <input id="nameInput" type="text" name="name" required>
+        </div>
+        <div class="form-raw">
+          <input id="start-button" type="submit" value="Start!">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="main">
+    <div id="status-content">
+      <span id="status">Connecting...</span>
+      <div id="people">
+        <ul id="people-list"></ul>
+      </div>
+      <button id="gameStart">Start!</button>
+    </div>
+
+
+    <div id="game-content">
+      <canvas id="gameArea" width="350" height="350" style="border:1px solid #c3c3c3;">
+        Your browser does not support the canvas element.
+      </canvas>
+    </div>
+  </div>
+}
