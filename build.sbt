@@ -7,7 +7,7 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.13.0"
 
-val akkaVersion = "2.5.23"
+val akkaVersion = "2.5.25"
 val akkaHttpVersion = "10.1.9"
 
 libraryDependencies += guice
@@ -30,9 +30,3 @@ libraryDependencies += "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpV
 
 // Adds additional packages into conf/routes
 // play.sbt.routes.RoutesKeys.routesImport += "com.example.binders._"
-
-
-
-libraryDependencies += "com.typesafe.akka" %% "akka-slf4j" % akkaVersion
-libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3" % Test
-lazy val logback = "ch.qos.logback" % "logback-classic" % "1.2.3" % Test

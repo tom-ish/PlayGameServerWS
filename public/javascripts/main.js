@@ -40,7 +40,8 @@ function startWebSocket(username) {
         $status.html("Connected");
         modalStart.style.display = "none";
 
-        var obj = "{\"msgType\": \"Join\", \"obj\": \"toto\"}";
+//        var obj = "{\"msgType\": \"Join\", \"obj\": \"toto\"}";
+        var obj = {"msgType": "Join", "obj": "toto"}
         console.log(obj);
         connection.send(obj);
         gameRunning = true;
@@ -68,7 +69,8 @@ function startWebSocket(username) {
     $(document).keydown(function(e) {
         if(gameRunning && arrowKeyCode[e.keyCode] !== undefined) {
             console.log("keyPressed : " + arrowKeyCode[e.keyCode]);
-            connection.send(JSON.stringify({"msgType" : "Tick", "obj": arrowKeyCode[e.keyCode]}));
+            //connection.send(JSON.stringify({"msgType" : "Tick", "obj": arrowKeyCode[e.keyCode]}));
+            connection.send({"msgType" : "Tick", "obj": arrowKeyCode[e.keyCode]})
         }
     });
 }
