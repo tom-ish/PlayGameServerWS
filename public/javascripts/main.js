@@ -20,8 +20,10 @@ $(document).ready(function() {
     $startForm.on('submit', $startForm, function(e) {
         e.preventDefault();
         var name = $('#nameInput').val();
-        startWebSocket(name);
-        return false;
+        if(name.length == 0 || name !== undefined) {
+            startWebSocket(name);
+            return false;
+        }
     });
 });
 
@@ -40,8 +42,8 @@ function startWebSocket(username) {
         $status.html("Connected");
         modalStart.style.display = "none";
 
-//        var obj = "{\"msgType\": \"Join\", \"obj\": \"toto\"}";
-        var obj = {"msgType": "Join", "obj": "toto"}
+        var obj = "{\"msgType\": \"Join\", \"obj\": \"" + username + "\"}";
+//        var obj = {"msgType": "Join", "obj": "toto"}
         console.log(obj);
         connection.send(obj);
         gameRunning = true;
@@ -70,7 +72,8 @@ function startWebSocket(username) {
         if(gameRunning && arrowKeyCode[e.keyCode] !== undefined) {
             console.log("keyPressed : " + arrowKeyCode[e.keyCode]);
             //connection.send(JSON.stringify({"msgType" : "Tick", "obj": arrowKeyCode[e.keyCode]}));
-            connection.send({"msgType" : "Tick", "obj": arrowKeyCode[e.keyCode]})
+            var obj2 = "{\"msgType\" : \"Tick\", \"obj\": \""+arrowKeyCode[e.keyCode]+"\"}"
+            connection.send(obj2);
         }
     });
 }

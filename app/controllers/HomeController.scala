@@ -19,10 +19,7 @@ class HomeController @Inject()(cc: ControllerComponents)
   extends AbstractController(cc) {
 
   def index() = Action { implicit request: Request[AnyContent] =>
-    val strWS = false
-    val socketUrl =
-      if(!strWS) routes.GameController.socket().webSocketURL()
-      else routes.GameController.socketString().webSocketURL()
+    val socketUrl = routes.GameController.socket().webSocketURL()
     Ok(views.html.index(socketUrl))
   }
 }
