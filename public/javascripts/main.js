@@ -72,7 +72,7 @@ function startWebSocket(username) {
         if(gameRunning && arrowKeyCode[e.keyCode] !== undefined) {
             console.log("keyPressed : " + arrowKeyCode[e.keyCode]);
             //connection.send(JSON.stringify({"msgType" : "Tick", "obj": arrowKeyCode[e.keyCode]}));
-            var obj2 = "{\"msgType\" : \"Tick\", \"obj\": \""+arrowKeyCode[e.keyCode]+"\"}"
+            var obj2 = "{\"msgType\" : \"playerJoined\", \"obj\":  { \"name\":\"" + arrowKeyCode[e.keyCode] + "\"}}"
             connection.send(obj2);
         }
     });
