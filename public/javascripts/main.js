@@ -42,7 +42,7 @@ function startWebSocket(username) {
         $status.html("Connected");
         modalStart.style.display = "none";
 
-        var obj = "{\"msgType\": \"Join\", \"obj\": \"" + username + "\"}";
+        var obj = "{\"msgType\": \"playerJoined\", \"obj\": { \"name\":\"" + username + "\"}}";
 //        var obj = {"msgType": "Join", "obj": "toto"}
         console.log(obj);
         connection.send(obj);
