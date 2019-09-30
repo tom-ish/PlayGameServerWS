@@ -1,6 +1,5 @@
 package controllers
 
-import actors.MyActor
 import akka.actor.ActorSystem
 import akka.stream.Materializer
 import javax.inject._
@@ -19,7 +18,9 @@ class HomeController @Inject()(cc: ControllerComponents)
   extends AbstractController(cc) {
 
   def index() = Action { implicit request: Request[AnyContent] =>
-    val socketUrl = routes.GameController.socket().webSocketURL(secure = true)
-    Ok(views.html.index(socketUrl))
+//    val socketUrl = routes.GameController.socket().webSocketURL(secure = true)
+    val socketUrl = routes.GameController.socket().webSocketURL()
+    val gameSocketUrl = routes.GameController.gameSocket().webSocketURL()
+    Ok(views.html.index(gameSocketUrl))
   }
 }

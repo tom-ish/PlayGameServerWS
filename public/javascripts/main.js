@@ -12,7 +12,7 @@ $(document).ready(function() {
         return;
     }
 
-    var $startForm = $('form');
+    var $startForm = $('#start-form');
     var $startButton = $('#start-button');
 
     var modalStart = document.getElementById('modal-start');
@@ -67,12 +67,24 @@ function startWebSocket(username) {
         }
     });
 
+
+
+    $('#send-msg-button').click(function(e) {
+        e.preventDefault();
+        var text = $('#msg-input').val();
+        console.log(text);
+        var chatMsg = "{\"msgType\": \"playerSendMessage\", \"obj\": { \"text\": \"" + text + "\", \"user\": \"" + username
+        + "\", \"date\": \"" + Date.now() + "\" }}";
+        connection.send(chatMsg);
+        return false;
+    });
+
     var arrowKeyCode = {37: 'LEFT', 38: 'UP', 39: 'RIGHT', 40: 'DOWN'}
     $(document).keydown(function(e) {
         if(gameRunning && arrowKeyCode[e.keyCode] !== undefined) {
             console.log("keyPressed : " + arrowKeyCode[e.keyCode]);
             //connection.send(JSON.stringify({"msgType" : "Tick", "obj": arrowKeyCode[e.keyCode]}));
-            var obj2 = "{\"msgType\" : \"playerJoined\", \"obj\":  { \"name\":\"" + arrowKeyCode[e.keyCode] + "\"}}"
+            var obj2 = "{\"msgType\" : \"playerSendMessage\", \"obj\":  { \"text\":\"" + arrowKeyCode[e.keyCode] + "\", \"user\": \""+ username +"\", \"date\": \"" + Date.now() + "\"}}"
             connection.send(obj2);
         }
     });

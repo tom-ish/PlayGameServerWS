@@ -2,7 +2,7 @@ package actors
 
 import akka.actor.{Actor, ActorRef, Props}
 import akka.event.LoggingReceive
-import models.{WsMessage, Player, PlayerWithActor}
+import models.{ChatMsg, Player, PlayerJoined, PlayerWithActor, PlayersUpdate, WsMessage}
 import play.api.Logging
 import spray.json.DefaultJsonProtocol._
 import play.api.libs.json.{JsError, JsSuccess, JsValue}
@@ -12,32 +12,50 @@ import scala.collection.mutable
 
 class InEventActor(out: ActorRef) extends Actor with Logging {
   import InEventActor._
-  import models.Format._
 
   override def receive: Receive = {
     case wsMessage: WsMessage =>
       logger.info("receive wsMessage")
       wsMessage.msgType match {
         case Params.PLAYER_JOINED =>
-          playerJoinedHandler(wsMessage.obj.as[Player])
+          val player = wsMessage.obj.as[Player]
+          players += (player.name -> PlayerWithActor(player, out))
+          out ! "ok"
+          notifyPlayersChanged()
+        case Params.PLAYER_SEND_MESSAGE =>
+          playerSendMessage(wsMessage.obj.as[ChatMsg])
         case Params.PLAYER_READY =>
         case Params.PLAYER_LEFT =>
       }
+    case PlayersUpdate(players) =>
+      logger.info("receive playersUpdate message")
+      self ! "ok2"
+    case s: String => logger.info(s)
   }
 
-  def playerJoinedHandler(p: Player) = {
-
+  def playerJoinedHandler(p: Player, from: ActorRef) = {
     println("player joined")
     println(p.name)
     players += (p.name -> PlayerWithActor(p, out))
-    players.foreach {
-      player => if(!(player._1 equals p.name)) println(player._1)
+  }
+
+  def notifyPlayersChanged() = {
+    println("notifying to all players")
+    players.values.foreach {  // notify to all the other players that there is a new player
+      p =>
+        logger.info("player => " + p.player.name)
+        p.actor ! PlayersUpdate(players.values.map(_.player))
     }
-//    obj.validate[Player] match {
-//      case s: JsSuccess[Player] =>
-//        val player = s.get
-//      case JsError(errors) =>
-//    }
+  }
+
+  def updatePlayers(name: String, actorRef: ActorRef) = {
+    if(!players.contains(name))
+      players += (name -> PlayerWithActor(Player(name), actorRef))
+  }
+
+  def playerSendMessage(msg: ChatMsg) = {
+    println("player sent message")
+    println(msg)
   }
 
   def playerReadyHandler() = { ??? }
@@ -46,6 +64,7 @@ class InEventActor(out: ActorRef) extends Actor with Logging {
 
 object InEventActor {
   val players = collection.mutable.LinkedHashMap[String, PlayerWithActor]()
+  val messages = collection.mutable.Queue[ChatMsg]()
 
   def props(out: ActorRef) = {
     println("props")

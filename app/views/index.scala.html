@@ -5,7 +5,7 @@
   <!-- Modal content -->
   <div id="modal-start" class="modal" >
     <div class="modal-content">
-      <form>
+      <form id="start-form">
         <div class="form-raw">
           <label for="nameInput">Enter your name</label>
           <input id="nameInput" type="text" name="name" required>
@@ -18,19 +18,38 @@
   </div>
 
   <div id="main">
-    <div id="status-content">
-      <span id="status">Connecting...</span>
-      <div id="people">
-        <ul id="people-list"></ul>
-      </div>
-      <button id="gameStart">Start!</button>
-    </div>
-
-
     <div id="game-content">
-      <canvas id="gameArea" width="350" height="350" style="border:1px solid #c3c3c3;">
+      <canvas id="gameArea" width="350" height="350">
         Your browser does not support the canvas element.
       </canvas>
     </div>
+
+    <div id="right-section">
+      <div id="status-content">
+        <span id="status">Connecting...</span>
+        <div id="people">
+          <ul id="people-list"></ul>
+        </div>
+        <button id="gameStart">Start!</button>
+      </div>
+
+      <div id="chat-content">
+        <div id="chat-msg-section">
+
+        </div>
+
+        <div id="chat-input-section">
+          <form id="chat-send-form">
+            <div id="user-msg-input" class="form-raw">
+              <input id="msg-input" type="text" name="name" required>
+            </div>
+            <div id="send-button" class="form-raw">
+              <input id="send-msg-button" type="submit" value="Send">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
   </div>
 }

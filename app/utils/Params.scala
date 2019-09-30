@@ -8,6 +8,7 @@ object Params {
   val PLAYER_JOINED = "playerJoined"
   val PLAYER_LEFT = "playerLeft"
   val PLAYER_READY = "playerReady"
+  val PLAYER_SEND_MESSAGE = "playerSendMessage"
 
 
   val PLAYER_FIELD_NAME = "name"

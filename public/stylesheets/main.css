@@ -1,17 +1,51 @@
 #main {
     width: 100%;
+    height: 100%;
+}
+#right-section {
+    width: 35%;
+    float: right;
+    border:1px solid #c3c3c3;
 }
 #status-content {
-    width: 40%;
-    float: right;
     margin: 15dp;
+    border:1px solid #c3c3c3;
+}
+#chat-content {
+    height: 350px;
+    margin: 15dp;
+    border:1px solid #c3c3c3;
 }
 #game-content {
+    float: left;
     width: 60%;
     margin: 15dp;
 }
+#gameArea {
+    border:1px solid #c3c3c3;
+}
+#chat-msg-section {
+    width: 100%;
+    height: 90%;
+    border:1px solid #c3c3c3;
+}
 
-
+#chat-input-section {
+    width: 100%;
+    height: 10%;
+    border:1px solid #c3c3c3;
+}
+#user-msg-input {
+    width: 85%;
+    float: left;
+}
+#msg-input {
+    width: 100%;
+}
+#send-button {
+    width: 15%;
+    float: right;
+}
 /* The Modal (background) */
 .modal {
   display: block;

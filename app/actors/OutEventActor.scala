@@ -1,10 +1,11 @@
 package actors
 
 import akka.actor.{Actor, ActorRef, Props}
+import models.WsMessage
 
 class OutEventActor(out: ActorRef) extends Actor {
   override def receive: Receive = {
-    case msg: String =>
+    case msg: WsMessage =>
       println("outEventActor : ")
       println(msg)
   }
