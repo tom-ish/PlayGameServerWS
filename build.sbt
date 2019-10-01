@@ -25,6 +25,9 @@ libraryDependencies += "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVers
 // https://mvnrepository.com/artifact/com.typesafe.akka/akka-http-spray-json
 libraryDependencies += "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion
 
+libraryDependencies += "com.adrianhurt" %% "play-bootstrap" % "1.5.1-P27-B4"
+libraryDependencies += "org.mindrot" % "jbcrypt" % "0.3m"
+
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.example.controllers._"
 

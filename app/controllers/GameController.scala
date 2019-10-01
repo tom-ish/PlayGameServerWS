@@ -36,27 +36,27 @@ class GameController @Inject()(cc: ControllerComponents)
 
   import models.Format._
   implicit val wsMessageFlowTransformer = MessageFlowTransformer.jsonMessageFlowTransformer[WsMessage, WsMessage]
-  def socket(): WebSocket = WebSocket.accept[WsMessage, WsMessage] { implicit request =>
-    logger.info("socket called")
-    val userInput = ActorFlow.actorRef { out => InEventActor.props(out) }
-    val userOutput = ActorFlow.actorRef  { out => OutEventActor.props(out) }
-
-    val (sink, source) = {
-      val src = MergeHub.source[WsMessage]
-      val sk = BroadcastHub.sink[WsMessage]
-      src.toMat(sk)(Keep.both).run()
-    }
-    val flow = Flow.fromSinkAndSource(sink, source)
-
-    userInput
-      .viaMat(flow)(Keep.right)
-      .viaMat(userOutput)(Keep.right)
-  }
+//  def socket(): WebSocket = WebSocket.accept[WsMessage, WsMessage] { implicit request =>
+//    logger.info("socket called")
+//    val userInput = ActorFlow.actorRef { out => InEventActor.props(out) }
+//    val userOutput = ActorFlow.actorRef  { out => OutEventActor.props(out) }
+//
+//    val (sink, source) = {
+//      val src = MergeHub.source[WsMessage]
+//      val sk = BroadcastHub.sink[WsMessage]
+//      src.toMat(sk)(Keep.both).run()
+//    }
+//    val flow = Flow.fromSinkAndSource(sink, source)
+//
+//    userInput
+//      .viaMat(flow)(Keep.right)
+//      .viaMat(userOutput)(Keep.right)
+//  }
 
   val supervisor = actorSystem.actorOf(Props[SupervisorActor], "supervisor")
 
   def gameSocket(): WebSocket = WebSocket.accept[WsMessage, WsMessage] { implicit request =>
-    logger.info("socket called")
+    logger.info("gamesocket called")
     val userInput = ActorFlow.actorRef[WsMessage, WsMessage] { out => ClientActor.props(out, supervisor) }
     val userOuput = ActorFlow.actorRef[WsMessage, WsMessage] { out => OutEventActor.props(out) }
 
@@ -71,7 +71,7 @@ class GameController @Inject()(cc: ControllerComponents)
         .joinMat(KillSwitches.singleBidi[WsMessage, WsMessage])(Keep.right)
         .backpressureTimeout(3.seconds)
         .map { e =>
-          println(s"$e")
+          logger.info(s"$e")
           e
         }
 

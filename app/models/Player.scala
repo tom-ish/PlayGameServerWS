@@ -6,6 +6,7 @@ import play.api.libs.json.Json
 case class Player(name: String)
 case object Player {
   implicit val playerReads = Json.reads[Player]
+  implicit val playerWrites = Json.writes[Player]
 }
 case class PlayerWithActor(player: Player, actor: ActorRef)
 case class Position(x: Int, y: Int)

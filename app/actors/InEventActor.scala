@@ -15,7 +15,7 @@ class InEventActor(out: ActorRef) extends Actor with Logging {
 
   override def receive: Receive = {
     case wsMessage: WsMessage =>
-      logger.info("receive wsMessage")
+      logger.info("in => receive wsMessage")
       wsMessage.msgType match {
         case Params.PLAYER_JOINED =>
           val player = wsMessage.obj.as[Player]
@@ -30,7 +30,7 @@ class InEventActor(out: ActorRef) extends Actor with Logging {
     case PlayersUpdate(players) =>
       logger.info("receive playersUpdate message")
       self ! "ok2"
-    case s: String => logger.info(s)
+    case s: String => logger.info("str: " +s)
   }
 
   def playerJoinedHandler(p: Player, from: ActorRef) = {

@@ -59,6 +59,17 @@ function startWebSocket(username) {
         console.log(message);
         var msgJson = JSON.parse(message.data);
         console.log(msgJson);
+
+        switch(msgJson.msgType) {
+            case "clientResponse":
+                break;
+            case "clientPlayersUpdate":
+                updatePlayers(msgJson.obj);
+                break;
+            case "clientMessageUpdate":
+                updateMessage(msgJson.obj);
+                break;
+        }
     }
 
     $('#gameStart').click(function() {
@@ -88,4 +99,41 @@ function startWebSocket(username) {
             connection.send(obj2);
         }
     });
+}
+
+function updatePlayers(players) {
+    $('#people-list').empty();
+    players.forEach(player => addPlayer(player))
+}
+
+function addPlayer(player) {
+    console.log("adding " + player.name);
+    var li = document.createElement("li");
+    var peopleList = document.getElementById("people-list");
+    li.appendChild(document.createTextNode(player.name));
+    peopleList.appendChild(li);
+}
+
+function updateMessage(message) {
+    console.log("update message");
+    console.log(message);
+    var msg = document.createElement("div");
+    var msgText = document.createElement("div");
+    var msgAuthor = document.createElement("div");
+    var msgDate = document.createElement("div");
+
+    msg.classList.add("message-item");
+    msgAuthor.classList.add("message-author");
+    msgText.classList.add("message-text");
+    msgDate.classList.add("message-date");
+
+    msgAuthor.textContent = message.user;
+    msgText.textContent = message.text;
+    msgDate.textContent = message.date;
+
+    msg.appendChild(msgAuthor);
+    msg.appendChild(msgText);
+    msg.appendChild(msgDate);
+
+    document.getElementById("message-list").appendChild(msg);
 }

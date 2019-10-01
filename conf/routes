@@ -5,7 +5,7 @@
 
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.index
-GET     /socket                     controllers.GameController.socket()
+# GET     /socket                     controllers.GameController.socket()
 GET     /gameSocket                 controllers.GameController.gameSocket()
 
 # Map static resources from the /public folder to the /assets URL path

@@ -17,4 +17,6 @@ object Params {
   val MSG_FIELD_OBJ = "obj"
 
   val CLIENT_RESPONSE = "clientResponse"
+  val CLIENT_PLAYERS_UPDATE = "clientPlayersUpdate"
+  val CLIENT_MESSAGE_UPDATE = "clientMessageUpdate"
 }

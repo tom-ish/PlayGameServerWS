@@ -11,30 +11,34 @@
           <input id="nameInput" type="text" name="name" required>
         </div>
         <div class="form-raw">
-          <input id="start-button" type="submit" value="Start!">
+          <input id="start-button" class="btn" type="submit" value="Start!">
         </div>
       </form>
     </div>
   </div>
 
   <div id="main">
-    <div id="game-content">
-      <canvas id="gameArea" width="350" height="350">
-        Your browser does not support the canvas element.
-      </canvas>
+    <div id="left-section">
+      <div id="game-content">
+        <canvas id="gameArea" width="350" height="350">
+          Your browser does not support the canvas element.
+        </canvas>
+      </div>
     </div>
 
-    <div id="right-section">
+    <div id="middle-section">
       <div id="status-content">
         <span id="status">Connecting...</span>
         <div id="people">
           <ul id="people-list"></ul>
         </div>
-        <button id="gameStart">Start!</button>
+        <button id="gameStart"  class="btn">Start!</button>
       </div>
+    </div>
 
+    <div id="right-section">
       <div id="chat-content">
-        <div id="chat-msg-section">
+        <div id="message-list">
 
         </div>
 
@@ -44,11 +48,85 @@
               <input id="msg-input" type="text" name="name" required>
             </div>
             <div id="send-button" class="form-raw">
-              <input id="send-msg-button" type="submit" value="Send">
+              <input id="send-msg-button" class="btn" type="submit" value="Send">
             </div>
           </form>
         </div>
       </div>
+    </div>
+
+
+
+    <!-- page start-->
+    <div class="chat-room mt">
+      <aside class="mid-side">
+        <div class="chat-room-head">
+          <h3 id="chatroomTitle">Chat Room</h3>
+          <div id="status_" class="float-right">Connecting...</div>
+        </div>
+
+        <!-- CHAT OUTPUT -->
+        <div id="messagesContainer"></div>
+        <!-- CHAT OUTPUT -->
+
+        <footer>
+          <div class="input-group mb-3">
+            <input id="messageField" class="form-control input-lg" placeholder="Type here"
+                   type="text" autofocus autocomplete="off" spellcheck="false" autocorrect="off">
+            <div class="input-group-append">
+              <button id="sendButton" class="btn btn-primary btn-theme" type="submit">Send</button>
+            </div>
+          </div>
+        </footer>
+      </aside>
+
+      <aside class="right-side">
+        <div class="user-head align-middle">
+          <button id="reconnectButton" class="btn btn-theme03">Reconnect</button>
+        </div>
+        <div class="invite-row">
+          <h4 class="pull-left">Team Members</h4>
+          <!-- <a href="#" class="btn btn-theme04 pull-right">+ Invite</a> -->
+        </div>
+        <ul class="chat-available-user">
+          <li>
+            <a href="chat_room.html">
+              <!--<img class="img-circle" src="img/friends/fr-02.jpg" width="32">-->
+              Paul Brown
+              <span class="text-muted">1h:02m</span>
+            </a>
+          </li>
+          <li>
+            <a href="chat_room.html">
+              <!--<img class="img-circle" src="img/friends/fr-05.jpg" width="32">-->
+              David Duncan
+              <span class="text-muted">1h:08m</span>
+            </a>
+          </li>
+          <li>
+            <a href="chat_room.html">
+              <!--<img class="img-circle" src="img/friends/fr-07.jpg" width="32">-->
+              Laura Smith
+              <span class="text-muted">1h:10m</span>
+            </a>
+          </li>
+          <li>
+            <a href="chat_room.html">
+              <!--<img class="img-circle" src="img/friends/fr-08.jpg" width="32">-->
+              Julia Schultz
+              <span class="text-muted">3h:00m</span>
+            </a>
+          </li>
+          <li>
+            <a href="chat_room.html">
+              <!--<img class="img-circle" src="img/friends/fr-01.jpg" width="32">-->
+              Frank Arias
+              <span class="text-muted">4h:22m</span>
+            </a>
+          </li>
+        </ul>
+      </aside>
+
     </div>
 
   </div>

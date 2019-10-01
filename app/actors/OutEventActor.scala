@@ -6,14 +6,17 @@ import models.{ChatMsg, WsMessage}
 class OutEventActor(out: ActorRef) extends Actor with ActorLogging {
   override def receive: Receive = {
     case msg: ChatMsg =>
-      println(msg)
+      log.info("out: "+msg)
       log.info(msg.toString)
     case msg: WsMessage =>
-      println("outEventActor : ")
-      println(msg)
+      log.info(msg.toString)
+      out ! msg
+    case e =>
+      log.info("receive e : ")
+      log.info(e.toString)
   }
 }
 
 object OutEventActor {
-  def props(out: ActorRef) = Props(new InEventActor(out))
+  def props(out: ActorRef) = Props(new OutEventActor(out))
 }

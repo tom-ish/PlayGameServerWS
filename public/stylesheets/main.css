@@ -2,26 +2,26 @@
     width: 100%;
     height: 100%;
 }
-#right-section {
-    width: 35%;
-    float: right;
+#left-section {
+    width: 30%;
+    margin: 5dp;
+    float: left;
     border:1px solid #c3c3c3;
 }
-#status-content {
-    margin: 15dp;
+#right-section {
+    width: 30%;
+    float: left;
+    border:1px solid #c3c3c3;
+}
+#middle-section {
+    width: 30%;
+    margin: 5dp;
+    float: left;
     border:1px solid #c3c3c3;
 }
 #chat-content {
     height: 350px;
     margin: 15dp;
-    border:1px solid #c3c3c3;
-}
-#game-content {
-    float: left;
-    width: 60%;
-    margin: 15dp;
-}
-#gameArea {
     border:1px solid #c3c3c3;
 }
 #chat-msg-section {
@@ -33,8 +33,28 @@
 #chat-input-section {
     width: 100%;
     height: 10%;
+    float: bottom;
     border:1px solid #c3c3c3;
 }
+
+.message-item {
+    width: 100%;
+    height: 1dp;
+    border: 1px solid #c3c3c3;
+}
+.message-author {
+    width: 20%;
+    float: left;
+}
+.message-text {
+    width: 50%;
+    float: left;
+}
+.message-date {
+    width: 20%;
+    float: left;
+}
+
 #user-msg-input {
     width: 85%;
     float: left;
@@ -46,6 +66,23 @@
     width: 15%;
     float: right;
 }
+
+
+
+.btn {
+    color: #343a40!important;
+    background-color: #D9DDDD!important;
+    border-color: #dee2e6 #dee2e6 #dee2e6!important;
+}
+
+
+
+
+
+
+
+
+
 /* The Modal (background) */
 .modal {
   display: block;
