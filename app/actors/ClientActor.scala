@@ -3,6 +3,7 @@ package actors
 import akka.actor.{Actor, ActorRef, Props}
 import models.{ChatMsg, Player, WsMessage}
 import play.api.Logging
+import play.api.libs.json.Json
 import utils.Params
 
 class ClientActor(out: ActorRef, supervisor: ActorRef) extends Actor with Logging {
@@ -18,8 +19,11 @@ class ClientActor(out: ActorRef, supervisor: ActorRef) extends Actor with Loggin
           supervisor ! ClientReady
       }
     case ClientSentMessage(msg) =>
+      logger.info("client sent:")
       logger.info(msg.toString)
-      out ! msg
+      val response = WsMessage(Params.CLIENT_RESPONSE, Json.toJson(msg))
+      logger.info(response.toString)
+      out ! response
   }
 }
 object ClientActor {

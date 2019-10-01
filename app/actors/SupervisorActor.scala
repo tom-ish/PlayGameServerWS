@@ -15,14 +15,15 @@ class SupervisorActor extends Actor with Logging {
   def process(players: Map[ActorRef, Player]): Receive = {
     case ClientJoined(player) =>
       logger.info("Client Joined : " + player)
-      context become process(players + (sender -> player))
+      context become process(players + (sender() -> player))
 
     case ClientLeft =>
-      context become process(players - sender)
+      context become process(players - sender())
 
     case csm: ClientSentMessage =>
       logger.info("Client sent Message : " + csm)
-      (players - sender).foreach(_._1 ! csm.msg)
+     // (players - sender).foreach(_._1 ! csm.msg)
+      (players).foreach(_._1 ! csm.msg)
   }
 }
 

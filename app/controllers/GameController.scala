@@ -3,8 +3,8 @@ package controllers
 import actors.{ClientActor, InEventActor, OutEventActor, SupervisorActor}
 import akka.actor.{ActorSystem, Props}
 import akka.http.scaladsl.model.ws.Message
-import akka.stream.Materializer
-import akka.stream.scaladsl.{BroadcastHub, Flow, Keep, MergeHub, Source}
+import akka.stream.{KillSwitches, Materializer}
+import akka.stream.scaladsl.{BroadcastHub, Flow, Keep, MergeHub, Sink, Source}
 import javax.inject._
 import models.WsMessage
 import play.api.Logging
@@ -15,6 +15,7 @@ import play.api.mvc._
 import services.{ChatRoomService, ChatService}
 import utils.Params
 
+import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext
 
 /**
@@ -56,23 +57,29 @@ class GameController @Inject()(cc: ControllerComponents)
 
   def gameSocket(): WebSocket = WebSocket.accept[WsMessage, WsMessage] { implicit request =>
     logger.info("socket called")
-    val userInput = ActorFlow.actorRef { out => ClientActor.props(out, supervisor) }
-    userInput
-    /*
-    val userOuput = ActorFlow.actorRef { out => OutEventActor.props(out) }
+    val userInput = ActorFlow.actorRef[WsMessage, WsMessage] { out => ClientActor.props(out, supervisor) }
+    val userOuput = ActorFlow.actorRef[WsMessage, WsMessage] { out => OutEventActor.props(out) }
 
     val (sink, source) = {
-      val src = MergeHub.source[WsMessage]
-      val sk = BroadcastHub.sink[WsMessage]
+      val src = MergeHub.source[WsMessage](perProducerBufferSize = 16)
+      val sk = BroadcastHub.sink[WsMessage](bufferSize = 256)
       src.toMat(sk)(Keep.both).run()
     }
+    source.runWith(Sink.ignore)
+
     val flow = Flow.fromSinkAndSource(sink, source)
+        .joinMat(KillSwitches.singleBidi[WsMessage, WsMessage])(Keep.right)
+        .backpressureTimeout(3.seconds)
+        .map { e =>
+          println(s"$e")
+          e
+        }
 
     userInput
       .viaMat(flow)(Keep.right)
       .viaMat(userOuput)(Keep.right)
 
-     */
+
   }
 
 }
