@@ -1,3 +1,5 @@
+var name;
+
 $(document).ready(function() {
     "use strict";
 
@@ -19,7 +21,7 @@ $(document).ready(function() {
 
     $startForm.on('submit', $startForm, function(e) {
         e.preventDefault();
-        var name = $('#nameInput').val();
+        name = $('#nameInput').val();
         if(name.length == 0 || name !== undefined) {
             startWebSocket(name);
             return false;
@@ -47,13 +49,13 @@ function startWebSocket(username) {
         console.log(obj);
         connection.send(obj);
         gameRunning = true;
-    }
+    };
     connection.onerror = function(error) {
         $status.html($('<p>', {
           text: 'Sorry, but there\'s some problem with your connection or the server is down.\n'
         }));
         console.log(error);
-    }
+    };
     connection.onmessage = function(message) {
         console.log("received message from server");
         console.log(message);
@@ -69,8 +71,17 @@ function startWebSocket(username) {
             case "clientMessageUpdate":
                 updateMessage(msgJson.obj);
                 break;
+            case "error_nameAlreayUsed":
+                modalStart.style.display = "block";
+                $status.html("Connected but username already used");
+                $('#start-form div label').html("Please choose another name");
+                break;
         }
-    }
+    };
+    connection.onclose = function(event) {
+        console.log("WebSocket has been closed");
+        startWebSocket(username);
+    };
 
     $('#gameStart').click(function() {
         if(!gameRunning) {
@@ -95,7 +106,7 @@ function startWebSocket(username) {
         if(gameRunning && arrowKeyCode[e.keyCode] !== undefined) {
             console.log("keyPressed : " + arrowKeyCode[e.keyCode]);
             //connection.send(JSON.stringify({"msgType" : "Tick", "obj": arrowKeyCode[e.keyCode]}));
-            var obj2 = "{\"msgType\" : \"playerSendMessage\", \"obj\":  { \"text\":\"" + arrowKeyCode[e.keyCode] + "\", \"user\": \""+ username +"\", \"date\": \"" + Date.now() + "\"}}"
+            var obj2 = "{\"msgType\" : \"playerMove\", \"obj\":  { \"text\":\"" + arrowKeyCode[e.keyCode] + "\", \"user\": \""+ username +"\", \"date\": \"" + Date.now() + "\"}}"
             connection.send(obj2);
         }
     });
@@ -135,5 +146,8 @@ function updateMessage(message) {
     msg.appendChild(msgText);
     msg.appendChild(msgDate);
 
+    if(name === message.user) msg.classList.add("message-self");
+
     document.getElementById("message-list").appendChild(msg);
+    $('#msg-input').val("");
 }

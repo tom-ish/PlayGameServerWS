@@ -3,7 +3,7 @@ package actors
 import akka.actor.{Actor, ActorRef, Props}
 import models.{ChatMsg, Player, WsMessage}
 import play.api.Logging
-import play.api.libs.json.Json
+import play.api.libs.json.{JsNumber, JsObject, Json}
 import utils.Params
 
 class ClientActor(out: ActorRef, supervisor: ActorRef) extends Actor with Logging {
@@ -17,6 +17,7 @@ class ClientActor(out: ActorRef, supervisor: ActorRef) extends Actor with Loggin
           supervisor ! ClientSentMessage(wsMessage.obj.as[ChatMsg])
         case Params.PLAYER_READY =>
           supervisor ! ClientReady
+        case Params.PLAYER_MOVE =>
       }
     case ClientUpdate(players) =>
       logger.info("players update:")
@@ -28,6 +29,14 @@ class ClientActor(out: ActorRef, supervisor: ActorRef) extends Actor with Loggin
       val response = WsMessage(Params.CLIENT_MESSAGE_UPDATE, Json.toJson(msg))
       //logger.info(response.toString)
       out ! response
+
+    case ErrorNameAlreadyUsed =>
+      logger.warn("ERROR : Name already used")
+      out ! WsMessage(Params.ERROR_NAME_ALREADY_USED, JsObject.empty)
+  }
+
+  override def postStop(): Unit = {
+    supervisor ! ClientLeft
   }
 }
 object ClientActor {
