@@ -31,11 +31,11 @@ class SupervisorActor extends Actor with Logging {
     case ClientLeft => /** TODO */
       logger.info("CLIENT LEFT")
       val player = (players.filter(_._2 equals sender()))
-      logger.info(player.head._2.toString())
+      logger.info(player.head._1.name)
       logger.info(sender.toString())
-      val newPlayers = players - player.keys.headOption.get
+      logger.info(player.head.toString())
+      val newPlayers = players.filter(p => !(p._2 equals sender()))
       logger.info(newPlayers.toString())
-      logger.info("size: " + newPlayers.size)
       notifyAll(newPlayers, ClientLeft)
       context become process(newPlayers)
     case csm: ClientSentMessage =>

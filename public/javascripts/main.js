@@ -138,9 +138,16 @@ function updateMessage(message) {
     msgText.classList.add("message-text");
     msgDate.classList.add("message-date");
 
+    var date = new Date();
+    var hours = date.getHours();
+
+    var minutes = "0" + date.getMinutes();
+    var time = hours + ":" + minutes.substr(-2);
+    console.log(time);
+
     msgAuthor.textContent = message.user;
     msgText.textContent = message.text;
-    msgDate.textContent = message.date;
+    msgDate.textContent = time;
 
     msg.appendChild(msgAuthor);
     msg.appendChild(msgText);
