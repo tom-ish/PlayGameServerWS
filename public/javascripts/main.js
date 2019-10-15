@@ -1,4 +1,5 @@
 var name;
+var players = [];
 
 $(document).ready(function() {
     "use strict";
@@ -33,6 +34,8 @@ function startWebSocket(username) {
     var gameRunning = false;
 
     var modalStart = document.getElementById("modal-start");
+    var modalGameChoice = document.getElementById("modal-game-choice");
+    var modalGame = document.getElementById("modal-game");
     var $status = $('#status');
     var socketURL = $('body').data("ws-url");
 
@@ -42,7 +45,8 @@ function startWebSocket(username) {
     connection.onopen = function() {
         console.log("web socket connected with server");
         $status.html("Connected");
-        modalStart.style.display = "none";
+        modalStart.classList.remove("modal");
+        modalStart.classList.add("hidden-modal");
 
         var obj = "{\"msgType\": \"playerJoined\", \"obj\": { \"name\":\"" + username + "\"}}";
 //        var obj = {"msgType": "Join", "obj": "toto"}
@@ -54,6 +58,7 @@ function startWebSocket(username) {
         $status.html($('<p>', {
           text: 'Sorry, but there\'s some problem with your connection or the server is down.\n'
         }));
+        $('#send-msg-button').prop('disabled', true);
         console.log(error);
     };
     connection.onmessage = function(message) {
@@ -72,7 +77,8 @@ function startWebSocket(username) {
                 updateMessage(msgJson.obj);
                 break;
             case "error_nameAlreayUsed":
-                modalStart.style.display = "block";
+                modalStart.classList.remove("hidden-modal");
+                modalStart.classList.add("modal");
                 $status.html("Connected but username already used");
                 $('#start-form div label').html("Please choose another name");
                 break;
@@ -89,7 +95,29 @@ function startWebSocket(username) {
         }
     });
 
+    $('#show-game-choice-button').click(function(e) {
+        e.preventDefault();
+        console.log("play button clicked");
+        displayPlayersChoice();
+        modalGameChoice.classList.remove("hidden-modal");
+        modalGameChoice.classList.add("modal");
 
+        var startGameButton = $('#start-game-button');
+        startGameButton.click(function(){
+            var users = document.getElementById("multiselect_to");
+            console.log("size to : " + users.length);
+            return false;
+        });
+
+        var closeGameChoice = $('#close-game-choice-button');
+        closeGameChoice.click(function(){
+            modalGameChoice.classList.remove("modal");
+            modalGameChoice.classList.add("hidden-modal");
+            return false;
+        });
+
+        return false;
+    });
 
     $('#send-msg-button').click(function(e) {
         e.preventDefault();
@@ -100,6 +128,7 @@ function startWebSocket(username) {
         connection.send(chatMsg);
         return false;
     });
+
 
     var arrowKeyCode = {37: 'LEFT', 38: 'UP', 39: 'RIGHT', 40: 'DOWN'}
     $(document).keydown(function(e) {
@@ -112,9 +141,18 @@ function startWebSocket(username) {
     });
 }
 
-function updatePlayers(players) {
+function updatePlayers(playersList) {
     $('#people-list').empty();
-    players.forEach(player => addPlayer(player))
+    players = [];
+    playersList.forEach(player => addPlayer(player))
+    players = playersList;
+
+    for(var i = 0; i < players.length; i++) {
+        console.log(players[i]);
+    }
+
+    console.log("new player added: " + players.length);
+
 }
 
 function addPlayer(player) {
@@ -157,4 +195,20 @@ function updateMessage(message) {
 
     document.getElementById("message-list").appendChild(msg);
     $('#msg-input').val("");
+}
+
+function displayPlayersChoice() {
+    var usersSelector = document.getElementById("multiselect");
+    usersSelector.options.length = 0;
+    var playersSelector = document.getElementById("multiselect_to");
+    playersSelector.options.length = 0;
+    players.forEach(player => {
+        console.log(player);
+        var option = document.createElement("option");
+        option.value = player.name;
+        option.text = player.name;
+        usersSelector.appendChild(option);
+    });
+
+    $('#multiselect').multiselect();
 }

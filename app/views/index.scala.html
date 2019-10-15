@@ -8,7 +8,7 @@
       <form id="start-form">
         <div class="form-raw">
           <label for="nameInput">Enter your name</label>
-          <input id="nameInput" type="text" name="name" required>
+          <input id="nameInput" type="text" required>
         </div>
         <div class="form-raw">
           <input id="start-button" class="btn" type="submit" value="Start!">
@@ -17,8 +17,57 @@
     </div>
   </div>
 
+  <div id="modal-game-choice" class="hidden-modal">
+    <div class="modal-content">
+      <form id="game-choice-form">
+        <div class="form-row">
+          <div class="w-50 p-1">
+              <select name="from[]" id="multiselect" class="form-control" size="8" multiple="multiple">
+                <option value="1">Item 1</option>
+                <option value="2">Item 2</option>
+                <option value="3">Item 3</option>
+                <option value="4">Item 4</option>
+                <option value="5">Item 5</option>
+                <option value="1">Item 6</option>
+                <option value="2">Item 7</option>
+                <option value="3">Item 8</option>
+                <option value="4">Item 9</option>
+                <option value="5">Item 10</option>
+              </select>
+            </div>
+        </div>
 
-  <div id="modal-game" class="">
+        <div class="form-row">
+          <div class="w-50 p-1">
+            <!-- DO NOT CHANGE THE ID ATTRIBUTE => multiselect.js is based internally with this id value -->
+            <button type="button" id="multiselect_leftSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-up"></i></button>
+          </div>
+          <div class="w-50 p-1">
+            <button type="button" id="multiselect_rightSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-down"></i></button>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="w-50 p-1">
+            <select name="to[]" id="multiselect_to" class="form-control" size="8" multiple="multiple"></select>
+          </div>
+        </div>
+
+
+
+        <div class="form-row">
+          <div class="w-50 p-1">
+            <button id="start-game-button" class="btn btn-block" type="submit">Start Playing</button>
+          </div>
+          <div class="w-50 p-1">
+            <button id="close-game-choice-button" class="btn btn-block" type="submit">Cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="modal-game" class="hidden-modal">
     <div class="modal-content">
       <canvas id="gameArea" width="350" height="350">
         Your browser does not support the canvas element.
@@ -58,7 +107,7 @@
 
       <aside class="right-side">
         <div class="user-head align-middle">
-          <button id="reconnectButton" class="btn btn-theme03">Reconnect</button>
+          <button id="show-game-choice-button" class="btn btn-theme03">Play</button>
         </div>
         <div class="invite-row">
           <h4 class="pull-left">Team Members</h4>

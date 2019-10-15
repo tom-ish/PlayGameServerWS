@@ -69,7 +69,9 @@
     float: right;
 }
 
-
+.input-group {
+    z-index: 0;
+}
 
 .btn {
     color: #343a40!important;
@@ -109,4 +111,8 @@
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
+}
+
+.hidden-modal {
+  display: none;
 }
